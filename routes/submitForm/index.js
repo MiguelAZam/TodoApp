@@ -1,5 +1,8 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Switch, TextInput, Text, TouchableOpacity, ToastAndroid } from 'react-native';
+import { StyleSheet, View, Switch, TextInput, ToastAndroid } from 'react-native';
+
+import FieldContainer from './FieldContainer';
+import ActionButton from './ActionButton';
 
 const styles = StyleSheet.create({
   field: {
@@ -16,28 +19,12 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 3,
-    borderColor: "#004E64",
     borderRadius: 5,
     borderWidth: 1,
     textAlignVertical: "top"
   },
   switchComp: {
     transform: [{scaleX: 1.5}, {scaleY: 1.5}]
-  },
-  touchableOp: {
-    borderRadius: 5,
-    flex: 1,
-    margin: 15
-  },
-  submitButton: {
-    backgroundColor: "#58B759"
-  },
-  deleteButton: {
-    backgroundColor: "#EF233C"
-  },
-  textButton: {
-    textAlign: "center",
-    color: "#fff"
   }
 });
 
@@ -54,20 +41,22 @@ class SubmitForm extends Component{
 		};
 	}
 
-	static navigationOptions = {
-    title: "Edit To-do\'s",
-    headerStyle: {
-      backgroundColor: '#004E64'
-    },
-    headerTintColor: '#fff'
+	static navigationOptions = ({navigation}) => {
+    return {
+      title: navigation.getParam("title"),
+      headerStyle: {
+        backgroundColor: '#004E64'
+      },
+      headerTintColor: '#fff'
+    };
   }
 
   componentDidMount(){
   	const { navigation } = this.props;
   	const todo = navigation.getParam("todo", "empty");
   	if(todo !== "empty"){
-  		const {_id, title, time, description} = todo;
-  		this.setState({id: _id, title, time, description});
+  		const {_id, title, time, description, completed} = todo;
+  		this.setState({id: _id, title, time, description, completed});
   	}
   }
 
@@ -75,7 +64,7 @@ class SubmitForm extends Component{
   	let fetchUrl;
   	let fetchMethod;
   	const {id, title, time, description, completed} = this.state;
-    const domain = ''; //Write your domain
+    const domain = 'http://192.168.1.71:8080'; //Write your domain
   	if(id === ''){
   		fetchUrl = `${domain}/api/todos`;
   		fetchMethod = 'POST';
@@ -111,28 +100,25 @@ class SubmitForm extends Component{
 		return(
 			<View style={{padding:30}}>
 
-        <View style={styles.field}>
-          <Text style={[styles.label, styles.globalStyle]}>Title:</Text>
+        <FieldContainer title="Title:">
           <TextInput 
             style={[styles.textInput, styles.globalStyle]} 
             value={title} 
             onChangeText={title => this.setState({title})}
             placeholder="Title..."
           />
-        </View>
+        </FieldContainer>
 
-        <View style={styles.field}>
-          <Text style={[styles.label, styles.globalStyle]}>Deadline:</Text>
+        <FieldContainer title="Deadline:">
           <TextInput 
             style={[styles.textInput, styles.globalStyle]} 
             value={time} 
             onChangeText={time => this.setState({time})}
             placeholder="Deadline..."
           />
-        </View>
+        </FieldContainer>
 
-        <View style={styles.field}>
-          <Text style={[styles.label, styles.globalStyle]}>Description:</Text>
+        <FieldContainer title="Description:">
           <TextInput 
             style={[styles.textInput, styles.globalStyle]} 
             value={description} 
@@ -141,25 +127,20 @@ class SubmitForm extends Component{
             multiline={true} 
             numberOfLines={7}
           />
-        </View>
+        </FieldContainer>
 
-        <View style={styles.field}>
-          <Text style={[styles.label, styles.globalStyle]}>Completed:</Text>
+        <FieldContainer title="Completed:">
           <Switch 
             style={[styles.switchComp, styles.globalStyle]} 
             value={completed} 
             onValueChange={() => this.setState({completed: !completed})}
           />
-        </View>
+        </FieldContainer>
 
-				<View style={styles.field}>
-          <TouchableOpacity style={[styles.touchableOp, styles.deleteButton]} onPress={this.deleteTodo}>
-            <Text style={[styles.globalStyle, styles.textButton]}>Delete</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.touchableOp, styles.submitButton]} onPress={this.submitTodo}>
-            <Text style={[styles.globalStyle, styles.textButton]}>Submit</Text>
-          </TouchableOpacity>
-        </View>
+				<FieldContainer>
+          <ActionButton color={{backgroundColor: "#EF233C"}} title="Delete" onPressAction={this.submitTodo}/>
+          <ActionButton color={{backgroundColor: "#58B759"}} title="Submit" onPressAction={this.submitTodo}/>
+        </FieldContainer>
 
 			</View>
 		);
