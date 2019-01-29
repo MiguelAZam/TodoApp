@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { StyleSheet, ScrollView} from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
+import Requests from './../../Requests';
+
 const styles = StyleSheet.create({
   list: {
     borderTopWidth: 0,
-    padding: 30,
+    padding: 15,
     marginTop: 0
   },
   listItem: {
@@ -22,29 +24,31 @@ const styles = StyleSheet.create({
 
 class TodoList extends Component {
 
-  constructor(props) {
-    super(props);
+  updateCompletedTask = (todo) => {
+    todo.completed = !todo.completed;
   }
 
   render() {
-  	const { todos, navigate } = this.props;
+  	let { todos, navigation, selected } = this.props;
+    todos = todos.reverse();
     return (
       <List containerStyle={styles.list}>
 			  {todos.map(todo => {
 					const { _id, title, time, description, completed } = todo;
-			    return (
-			      <ListItem 
-			        onPressRightIcon={() => navigate('EditAdd', {todo, title: "Edit To-do"})}
-			        key={_id} 
-			        containerStyle={[styles.listItem, {backgroundColor: completed ? '#C6FFCC' : '#CCFAFF'}]}
-			        rightIcon={{name:completed ? 'close' : 'chevron-right', color: '#586F7C'}}
-			        leftIcon={{name:'check-circle', color:completed ? '#58B759' : '#586F7C'}}
-			        title={title} 
-			        titleStyle={styles.text}
-			        subtitle={time}
-			        subtitleStyle={styles.text}
-			      />
-			    );
+			    return ((selected == completed) || (completed === undefined)) ? (<ListItem 
+              onPressRightIcon={() => navigation.navigate('EditAdd', {todo, title: "Edit To-do", requestUpdate: navigation.getParam("requestUpdate")})}
+              leftIconOnPress={(todo) => this.updateCompletedTask(todo)}
+              onLongPress={() => console.log("Long press!")}
+              key={_id} 
+              containerStyle={[styles.listItem, {backgroundColor: completed ? '#C6FFCC' : '#CCFAFF'}]}
+              rightIcon={{color: '#586F7C'}}
+              hideChevron={completed ? true : false}
+              leftIcon={{name:'check-circle', color:completed ? '#58B759' : '#586F7C'}}
+              title={title} 
+              titleStyle={styles.text}
+              subtitle={time}
+              subtitleStyle={styles.text}
+            />) : null
 			  })}
 			</List>
     );

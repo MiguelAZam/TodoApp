@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   touchableOp: {
     borderRadius: 5,
     flex: 1,
-    margin: 15
+    margin: 10
   },
   textButton: {
     textAlign: "center",

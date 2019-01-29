@@ -4,11 +4,11 @@ import { StyleSheet, View, Text } from 'react-native';
 const styles = StyleSheet.create({
   field: {
     flexDirection: 'row', 
-    margin: 20
+    margin: 15
   },
   globalStyle: {
     fontSize: 20,
-    padding: 15
+    padding: 10
   },
   label: {
     flex: 1,

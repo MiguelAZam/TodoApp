@@ -1,17 +1,14 @@
 import React, {Component} from 'react';
-import { StyleSheet, View, Switch, TextInput, ToastAndroid } from 'react-native';
+import { StyleSheet, View, Switch, TextInput, ToastAndroid, ScrollView } from 'react-native';
 
 import FieldContainer from './FieldContainer';
 import ActionButton from './ActionButton';
 
+import Requests from './../../Requests';
+
 const styles = StyleSheet.create({
-  field: {
-    flexDirection: 'row', 
-    margin: 20
-  },
   globalStyle: {
-    fontSize: 20,
-    padding: 15
+    fontSize: 16
   },
   label: {
     flex: 1,
@@ -21,7 +18,8 @@ const styles = StyleSheet.create({
     flex: 3,
     borderRadius: 5,
     borderWidth: 1,
-    textAlignVertical: "top"
+    textAlignVertical: "top",
+    padding: 10
   },
   switchComp: {
     transform: [{scaleX: 1.5}, {scaleY: 1.5}]
@@ -60,48 +58,57 @@ class SubmitForm extends Component{
   	}
   }
 
+  checkFields = () => {
+    const {title, time, description} = this.state;
+    let message = "";
+    if(title === ''){
+      message += "Title ";
+    }
+    if(time === ''){
+      message += "Deadline ";
+    }
+    if(description === ''){
+      message += "Description ";
+    }
+    return message;
+  }
+
   submitTodo = () => {
-  	let fetchUrl;
-  	let fetchMethod;
-  	const {id, title, time, description, completed} = this.state;
-    const domain = 'http://192.168.1.71:8080'; //Write your domain
-  	if(id === ''){
-  		fetchUrl = `${domain}/api/todos`;
-  		fetchMethod = 'POST';
-  	} else{
-  		fetchUrl = `${domain}/api/todos/${id}`;
-  		fetchMethod = 'PUT';
-  	}
-  	const jsonBody = JSON.stringify({title, time, description, completed});
-  	const params = {
-  		method: fetchMethod, 
-  		headers: {
-  			'Accept': 'application/json', 
-  			'Content-Type': 'application/json'
-  		},
-  		body: jsonBody
-  	};
-  	fetch(fetchUrl, params).then(resp => resp.json()).then(respJson => {
-  		ToastAndroid.show(respJson.message, ToastAndroid.SHORT);
-      this.props.navigation.navigate('Home');
-  	}).catch(err => console.log(err));
+    const {id, title, time, description, completed} = this.state;
+    const submittedTodo = {title, time, description, completed};
+    const error = this.checkFields();
+    if(error !== ''){
+      errorMessage = `Please fill the following fields: \n ${error}`;
+      ToastAndroid.show(errorMessage, ToastAndroid.SHORT);
+      return;
+    }
+    let request;
+  	if(id === '' || id === undefined){
+      request = Requests.postRequest(submittedTodo);
+    } else{
+      request = Requests.putRequest(id, submittedTodo);
+    }
+    const returnToHome = this.props.navigation.getParam("requestUpdate");
+    returnToHome(request);
   }
 
   deleteTodo = () => {
-    const {id} = this.state;
-    fetch(`http://192.168.1.71:8080/api/todos/${id}`, {method: "DELETE"}).then(resp => resp.json()).then(respJson => {
-      ToastAndroid.show(respJson.message, ToastAndroid.SHORT);
-      this.props.navigation.navigate('Home');
-    }).catch(err => console.log(err));
+    const {id, title, time, description, completed} = this.state;
+    const submittedTodo = {title, time, description, completed};
+    let request = Requests.deleteRequest(id, submittedTodo);
+    
+    const returnToHome = this.props.navigation.getParam("requestUpdate");
+    returnToHome(request);
   }
 
 	render(){
-		const {title, time, description, completed} = this.state;
+		const {id, title, time, description, completed} = this.state;
 		return(
-			<View style={{padding:30}}>
+			<ScrollView style={{padding:10}}>
 
         <FieldContainer title="Title:">
           <TextInput 
+            autoFocus={true}
             style={[styles.textInput, styles.globalStyle]} 
             value={title} 
             onChangeText={title => this.setState({title})}
@@ -138,11 +145,11 @@ class SubmitForm extends Component{
         </FieldContainer>
 
 				<FieldContainer>
-          <ActionButton color={{backgroundColor: "#EF233C"}} title="Delete" onPressAction={this.submitTodo}/>
+          {id === '' || id === undefined ? null : <ActionButton color={{backgroundColor: "#EF233C"}} title="Delete" onPressAction={this.deleteTodo}/>}
           <ActionButton color={{backgroundColor: "#58B759"}} title="Submit" onPressAction={this.submitTodo}/>
         </FieldContainer>
 
-			</View>
+			</ScrollView>
 		);
 	}
 

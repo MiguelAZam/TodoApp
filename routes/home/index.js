@@ -38,8 +38,9 @@ class Home extends Component {
   }
 
   static navigationOptions = ({navigation}) => {
+    const requestUpdate = navigation.getParam("requestUpdate");
     const addButton = (
-      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('EditAdd', {title: "Add To-do"})}>
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('EditAdd', {title: "Add To-do", requestUpdate})}>
         <Text style={{color: '#fff'}}>Add +</Text>
       </TouchableOpacity>
     );
@@ -55,6 +56,7 @@ class Home extends Component {
   }
 
   componentDidMount(){
+    this.props.navigation.setParams({requestUpdate: this._requestUpdate});
     const getInfoJSON = Requests.getRequest();
     getInfoJSON.then(respJson => {
       this.setState({todos: respJson});
@@ -69,9 +71,20 @@ class Home extends Component {
     this.setState({selected});
   }
 
+  _requestUpdate = (request) => {
+    request.then(jsonResponse => {
+      const getRequest = Requests.getRequest();
+      getRequest.then(respJson => {
+        this.setState({todos: respJson});
+      }).then(() => {
+        this.props.navigation.navigate('Home')
+      }).catch(err => console.log(err));
+    });
+  }
+
   render() {
     const { modalShow, todos, buttons, selected } = this.state;
-    const { navigate } = this.props.navigation;
+    const { navigation } = this.props;
     const progressBar = (<ProgressBarAndroid style={styles.progressBar}/>);
 
     return (
@@ -88,7 +101,7 @@ class Home extends Component {
           selected={selected}
         />
         <ScrollView>
-          {todos.length ? <TodoList todos={todos} navigate={navigate}/> : progressBar}
+          {todos.length ? <TodoList todos={todos} navigation={navigation} selected={selected}/> : progressBar}
         </ScrollView>
       </View>
       
