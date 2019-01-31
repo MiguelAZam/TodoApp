@@ -7,6 +7,7 @@ Todo App written in React Native for Android. It has a simple server which make 
 You will need to have installed MongoDB server in your computer.
 
 * git clone https://github.com/MiguelAZam/TodoApp
+* Go to the Requests.js file and if you are running the server locally put your IPv4 Address plus the port in the DOMAIN variable (Ex. http://123.233.2.123:8080/) the port 8080 is the default, if you want to change it go to server/index.js and look for the port variable
 * yarn (To download all dependencies)
 * yarn server (To run the server)
 * yarn start (To run the development server)
