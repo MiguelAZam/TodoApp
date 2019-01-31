@@ -1,9 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, ScrollView} from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
-import Requests from './../../Requests';
-
+//Styles
 const styles = StyleSheet.create({
   list: {
     borderTopWidth: 0,
@@ -22,23 +21,18 @@ const styles = StyleSheet.create({
   }
 });
 
-class TodoList extends Component {
-
-  updateCompletedTask = (todo) => {
-    todo.completed = !todo.completed;
-  }
-
-  render() {
-  	let { todos, navigation, selected } = this.props;
-    todos = todos.reverse();
-    return (
+const TodoList = (props) => {
+  //Deconstruct props
+  let { todos, navigation, selected, onShowModal, onCompleteTask } = props;
+  return (
       <List containerStyle={styles.list}>
-			  {todos.map(todo => {
-					const { _id, title, time, description, completed } = todo;
-			    return ((selected == completed) || (completed === undefined)) ? (<ListItem 
+        {todos.map(todo => {
+          const { _id, title, time, description, completed } = todo;
+          return ((selected == completed) || (completed === undefined)) ? (
+            <ListItem 
               onPressRightIcon={() => navigation.navigate('EditAdd', {todo, title: "Edit To-do", requestUpdate: navigation.getParam("requestUpdate")})}
-              leftIconOnPress={(todo) => this.updateCompletedTask(todo)}
-              onLongPress={() => console.log("Long press!")}
+              leftIconOnPress={() => onCompleteTask(todo)}
+              onLongPress={() => onShowModal(todo)}
               key={_id} 
               containerStyle={[styles.listItem, {backgroundColor: completed ? '#C6FFCC' : '#CCFAFF'}]}
               rightIcon={{color: '#586F7C'}}
@@ -49,10 +43,9 @@ class TodoList extends Component {
               subtitle={time}
               subtitleStyle={styles.text}
             />) : null
-			  })}
-			</List>
+        })}
+      </List>
     );
-  }
-}
+};
 
 export default TodoList;

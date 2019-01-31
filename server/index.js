@@ -4,6 +4,8 @@ var todosModel  = require('./database');
 
 var app = express();
 
+const port = 8080; //Port that will use the server
+
 //Configure app to use bodyParser and allow us 
 //to POST and PUT
 app.use(bodyParser.urlencoded({extended: false}));
@@ -86,4 +88,4 @@ app.use('/api', router);
 
 
 
-app.listen(8080);
+app.listen(port);

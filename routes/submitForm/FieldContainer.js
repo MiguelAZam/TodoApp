@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 
+//Styles
 const styles = StyleSheet.create({
   field: {
     flexDirection: 'row', 
@@ -17,6 +18,7 @@ const styles = StyleSheet.create({
 });
 
 const FieldContainer = (props) => {
+  //Deconstruct props
 	const { title } = props;
     return (
       <View style={styles.field}>

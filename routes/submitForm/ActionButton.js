@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
+//Styles
 const styles = StyleSheet.create({
   globalStyle: {
     fontSize: 20,
@@ -18,6 +19,7 @@ const styles = StyleSheet.create({
 });
 
 const ActionButton = (props) => {
+  //Deconstruct props
   const {title, onPressAction, color} = props;
   return (
     <TouchableOpacity style={[styles.touchableOp, color]} onPress={onPressAction}>
