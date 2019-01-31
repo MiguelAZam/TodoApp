@@ -19,7 +19,7 @@ I did all the development part in my phone (Samsung Grand Prime +) which means t
 
 ## Images
 
-![Home Screen Pending Tasks](./assets/ScreenShots/PendingScreen.png)
-![Home Screen Completed Tasks](./assets/ScreenShots/CompletedScreen.png)
-![Home Screen Modal Tasks](./assets/ScreenShots/ModalScreen.png)
-![Add/Edit Screen Tasks](./assets/ScreenShots/AddScreen.png)
+![Home Screen Pending Tasks](https://github.com/MiguelAZam/TodoApp/blob/master/assets/ScreenShots/PendingScreen.png)
+![Home Screen Completed Tasks](https://github.com/MiguelAZam/TodoApp/blob/master/assets/ScreenShots/CompletedScreen.png)
+![Home Screen Modal Tasks](https://github.com/MiguelAZam/TodoApp/blob/master/assets/ScreenShots/ModalScreen.png)
+![Add/Edit Screen Tasks](https://github.com/MiguelAZam/TodoApp/blob/master/assets/ScreenShots/AddScreen.png)
