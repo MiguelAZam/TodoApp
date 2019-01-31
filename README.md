@@ -17,9 +17,9 @@ I recommend to run the server and the development server in different command li
 
 I did all the development part in my phone (Samsung Grand Prime +) which means that I didn't use the simulator provided by Android Studio
 
-##Images
+## Images
 
-![Home Screen Pending Tasks](/assets/Screenshots/PendingScreen.png)
-![Home Screen Completed Tasks](/assets/Screenshots/CompletedScreen.png)
-![Home Screen Modal Tasks](/assets/Screenshots/ModalScreen.png)
-![Add/Edit Screen Tasks](/assets/Screenshots/AddScreen.png)
+![Home Screen Pending Tasks](./assets/Screenshots/PendingScreen.png)
+![Home Screen Completed Tasks](./assets/Screenshots/CompletedScreen.png)
+![Home Screen Modal Tasks](./assets/Screenshots/ModalScreen.png)
+![Add/Edit Screen Tasks](./assets/Screenshots/AddScreen.png)

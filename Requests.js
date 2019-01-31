@@ -1,4 +1,4 @@
-const DOMAIN = "http://192.168.1.71:8080"; //Domain:port 
+const DOMAIN = ""; //Domain:port 
 const API_URL = `${DOMAIN}/api/todos`;
 
 //Headers for PUT and POST requests 
